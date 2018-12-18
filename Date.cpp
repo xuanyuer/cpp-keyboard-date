@@ -89,11 +89,13 @@ int Date::getDayOfWeek () const
 void Date::setDay (int day)
 {
     this -> day = day;
+    adjustDays ();
 }
 
 void Date::setMonth (int month)
 {
     this -> month = month;
+    adjustMonths ();
 }
 
 void Date::setYear (int year)
