@@ -1,7 +1,13 @@
+/*
+ * File Name   : Keybaord.cpp
+ * Author      : Er Xuan Yu
+ * Description : Implementation for Keyboard.hpp, a simple console input handler for C++
+ */
+
+
 #include <algorithm>
 #include <iostream>
 #include <sstream>
-#include <string>
 
 #include "Keyboard.hpp"
 

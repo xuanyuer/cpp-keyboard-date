@@ -1,37 +1,27 @@
-enum DateFormat
-{
-    DAY,
-    MONTH,
-    YEAR
-};
+/*
+ * File Name   : Date.hpp
+ * Author      : Er Xuan Yu
+ * Description : Header file for Date.cpp, a Date class for handling of simple date arithmetics.
+ */
 
-enum Month
-{
-    JANUARY = 1,
-    FEBRUARY,
-    MARCH,
-    APRIL,
-    MAY,
-    JUNE,
-    JULY,
-    AUGUST,
-    SEPTEMBER,
-    OCTOBER,
-    NOVEMBER,
-    DECEMBER
-};
+enum DateFormat;
+enum DayOfWeek;
+enum Month;
 
 class Date
 {
     public:
         // Constructors
         Date ();
+        Date (const Date & date);
         Date (int year, int month, int day);
 
         // Accessors
         int getDay () const;
         int getMonth () const;
         int getYear () const;
+        int dateInDays () const;
+        int getDayOfWeek () const;
 
         // Mutators
         void setDay (int day);
@@ -46,25 +36,38 @@ class Date
         void parseDate (int year, int month, int day);
         int daysInMonth () const;
         bool isLeapYear () const;
-        int dateInDays () const;
+        void adjustMonths ();
+        void adjustDays ();
 
-        // Overloaded operators
+        // Overload Equality Operators
         Date & operator = (const Date & date);
+        bool operator == (const Date & date);
+        bool operator != (const Date & date);
+
+        // Overload Comparator Operators
         bool operator < (const Date & date);
         bool operator <= (const Date & date);
         bool operator > (const Date & date);
         bool operator >= (const Date & date);
-        bool operator == (const Date & date);
-        bool operator != (const Date & date);
-        Date & operator + (int days);
+
+        // Overload Increment Operators
+        Date operator + (int days);
         Date & operator += (int days);
+        Date & operator ++ ();
+
+        // Overload Decrement Operators
         int operator - (const Date & date);
+        Date operator - (int days);
+        Date & operator -= (int days);
+        Date & operator -- ();
 
     private:
         int day;
         int month;
         int year;
-
-        void adjustMonths ();
-        void adjustDays ();
+        
+        // Stream operator
+        friend std::ostream & operator << (std::ostream & out, const Date & date);
 };
+
+std::ostream & operator << (std::ostream & out, const Date & date);

@@ -1,3 +1,9 @@
+/*
+ * File Name   : Keybaord.hpp
+ * Author      : Er Xuan Yu
+ * Description : Header file for Keyboard.cpp, a simple console input handler for C++
+ */
+
 namespace keyboard
 {
 	std::string	readString	(const std::string & prompt);
