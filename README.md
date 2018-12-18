@@ -10,6 +10,6 @@ Should there be any code that you feel is similar or belongs to someone/you, and
 please do let me know and I'll glady credit or remove the code accordingly.
 
 Credits:
-Day Number
 ----------
+Day Number
 https://alcor.concordia.ca//~gpkatch/gdate-algorithm.html
