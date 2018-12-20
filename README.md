@@ -13,5 +13,6 @@ Credits:
 ----------
 Day Number
 https://alcor.concordia.ca//~gpkatch/gdate-algorithm.html
+
 Day of Week
 https://groups.google.com/d/msg/comp.lang.c/KTnoRmSao6A/uViF8AkwNc4J
