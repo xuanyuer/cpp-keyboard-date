@@ -8,10 +8,12 @@
             "type": "shell",
             "command": "g++",
             "args": [
-                "-c",
+                "-o",
+                "test.exe",
                 "-g",
                 "Date.cpp",
-                "Keyboard.cpp"
+                "Keyboard.cpp",
+                "test.cpp"
             ],
             "group": {
                 "kind": "build",

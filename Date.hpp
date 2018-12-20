@@ -4,9 +4,21 @@
  * Description : Header file for Date.cpp, a Date class for handling of simple date arithmetics.
  */
 
-enum DateFormat;
-enum DayOfWeek;
-enum Month;
+enum DateFormat
+{
+    DAY, MONTH, YEAR
+};
+
+enum DayOfWeek
+{
+    SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY
+};
+
+enum Month
+{
+    JANUARY = 1, FEBRUARY, MARCH, APRIL, MAY, JUNE, JULY,
+    AUGUST, SEPTEMBER, OCTOBER, NOVEMBER, DECEMBER
+};
 
 class Date
 {
@@ -17,27 +29,29 @@ class Date
         Date (int year, int month, int day);
 
         // Accessors
-        int getDay () const;
-        int getMonth () const;
-        int getYear () const;
-        int dateInDays () const;
-        int getDayOfWeek () const;
+        int get_day () const;
+        int get_month () const;
+        int get_year () const;
+        int date_in_days () const;
+        int get_day_of_week () const;
+        std::string get_day_of_week_string () const;
 
         // Mutators
-        void setDay (int day);
-        void setMonth (int month);
-        void setYear (int year);
+        void set_day (int day);
+        void set_month (int month);
+        void set_year (int year);
 
         // To String
-        std::string toString () const;
-        std::string toString (const std::string & format, DateFormat arg1, DateFormat arg2, DateFormat arg3) const;
+        std::string to_string () const;
+        std::string to_string (const std::string & format, DateFormat arg1, DateFormat arg2, DateFormat arg3) const;
 
         // Helpers
-        void parseDate (int year, int month, int day);
-        int daysInMonth () const;
-        bool isLeapYear () const;
-        void adjustMonths ();
-        void adjustDays ();
+        void parse_date (int year, int month, int day);
+        int days_in_month () const;
+        bool is_leap_year () const;
+        void adjust_months ();
+        void adjust_days ();
+        static Date now ();
 
         // Overload Equality Operators
         Date & operator = (const Date & date);
@@ -54,20 +68,21 @@ class Date
         Date operator + (int days);
         Date & operator += (int days);
         Date & operator ++ ();
+        Date operator ++ (int);
 
         // Overload Decrement Operators
         int operator - (const Date & date);
         Date operator - (int days);
         Date & operator -= (int days);
         Date & operator -- ();
+        Date operator -- (int);
 
     private:
         int day;
         int month;
         int year;
         
-        // Stream operator
+        // Stream operators
         friend std::ostream & operator << (std::ostream & out, const Date & date);
+        friend std::istream & operator >> (std::istream & in, Date & date);
 };
-
-std::ostream & operator << (std::ostream & out, const Date & date);

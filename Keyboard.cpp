@@ -1,9 +1,8 @@
 /*
  * File Name   : Keybaord.cpp
  * Author      : Er Xuan Yu
- * Description : Implementation for Keyboard.hpp, a simple console input handler for C++
+ * Description : Implementation for keyboard.hpp, a simple console input handler for C++
  */
-
 
 #include <algorithm>
 #include <iostream>
@@ -11,82 +10,85 @@
 
 #include "Keyboard.hpp"
 
-std::string keyboard::readString (const std::string & prompt)
+namespace keyboard
 {
-	std::string input;
-
-	std::cout << prompt;
-	std::getline (std::cin, input);
-
-	return input;
-}
-
-char keyboard::readChar (const std::string & prompt)
-{
-	std::string input = readString (prompt);
-
-	while (input.size () != 1)
+	template <typename T>
+	bool valid (const std::string input)
 	{
-		std::cout << "*** Please enter a character ***" << std::endl;
-		input = readString (prompt);
+		std::istringstream iss (input);
+
+		T t;
+		iss >> t;
+
+		return iss.eof () && !iss.fail ();
 	}
 
-	return input [0];
-}
-
-int keyboard::readInt (const std::string & prompt)
-{
-	std::string input = readString (prompt);
-
-	while (!valid <int> (input))
+	std::string readString (const std::string & prompt)
 	{
-		std::cout << "*** Please enter an integer ***" << std::endl;
-		input = readString (prompt);
+		std::string input;
+
+		std::cout << prompt;
+		std::getline (std::cin, input);
+
+		return input;
 	}
 
-	return atoi (input.c_str ());
-}
-
-template <size_t length>
-int keyboard::menuInput (std::string title, std::string (& menu) [length])
-{
-	std::transform (title.begin (), title.end (), title.begin (), ::toupper);
-
-	printLine (80, '=');
-	std::cout << title << std::endl;
-	printLine (80, '-');
-
-	for (int i = 0; i < length; ++ i) std::cout << '[' << i + 1 << "] " << menu [i] << std::endl;
-	std::cout << "[0] Quit" << std::endl;
-	
-	printLine (80, '-');
-
-	int choice = readInt ("Your choice : ");
-	while (choice < 0 || choice > length)
+	char readChar (const std::string & prompt)
 	{
-		std::cout << "*** Invalid choice ***" << std::endl;
-		choice = readInt ("Your choice : ");
+		std::string input = readString (prompt);
+
+		while (input.size () != 1)
+		{
+			std::cout << "*** Please enter a character ***" << std::endl;
+			input = readString (prompt);
+		}
+
+		return input [0];
 	}
 
-	return choice;
-}
+	int readInt (const std::string & prompt)
+	{
+		std::string input = readString (prompt);
 
-template <typename T>
-bool keyboard::valid (const std::string input)
-{
-	std::istringstream iss (input);
+		while (!valid <int> (input))
+		{
+			std::cout << "*** Please enter an integer ***" << std::endl;
+			input = readString (prompt);
+		}
 
-	T t;
-	iss >> t;
+		return atoi (input.c_str ());
+	}
 
-	return iss.eof () && !iss.fail ();
-}
+	int menuInput (std::string title, std::string menu [], int length)
+	{
+		std::transform (title.begin (), title.end (), title.begin (), ::toupper);
 
-void keyboard::printLine (const int size, const char pattern)
-{
-	for (int i = 0; i < size; ++ i)
+		printLine (80, '=');
+		std::cout << title << std::endl;
+		printLine (80, '-');
 
-		std::cout << pattern;
-	
-	std::cout << std::endl;
+		for (int i = 0; i < length; ++ i) std::cout << '[' << i + 1 << "] " << menu [i] << std::endl;
+		std::cout << "[0] Quit" << std::endl;
+		
+		printLine (80, '-');
+
+		int choice = readInt ("Your choice : ");
+		while (choice < 0 || choice > length)
+		{
+			std::cout << "*** Invalid choice ***" << std::endl;
+			choice = readInt ("Your choice : ");
+		}
+
+		std::cout << std::endl;
+		return choice;
+	}
+
+	void printLine (const int size, const char pattern)
+	{
+		for (int i = 0; i < size; ++ i)
+
+			std::cout << pattern;
+		
+		std::cout << std::endl;
+	}
 }
