@@ -28,7 +28,7 @@ int main (int argc, const char ** argv)
         "Operators"
     };
 
-    Date date;
+    xy::Date date;
     int choice = -1;
     while (choice != 0)
     {
@@ -44,14 +44,14 @@ int main (int argc, const char ** argv)
 
             case 2:
             {
-                Date date2 = Date (date);
+                xy::Date date2 = Date (date);
                 cout << date2 << endl;
             }
             break;
                 
             case 3:
             {
-                Date date2 (2019, 74, -24);
+                xy::Date date2 (2019, 74, -24);
                 cout << date2 << endl;
             }
             break;
