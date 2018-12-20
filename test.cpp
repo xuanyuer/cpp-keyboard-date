@@ -109,7 +109,7 @@ int main (int argc, const char ** argv)
                 
             case 12:
             {
-                cout << date.is_leap_year () << endl;
+                cout << (date.is_leap_year () ? "Yes" : "No") << endl;
             }
             break;
             

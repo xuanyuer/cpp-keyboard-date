@@ -96,7 +96,7 @@ namespace xy
 
     bool Date::is_leap_year () const
     {
-        return this -> year % 400 || (this -> year % 4 == 0 && this -> year % 100 != 0);
+        return this -> year % 400 == 0 || (this -> year % 4 == 0 && this -> year % 100 != 0);
     }
 
     int Date::days_in_month () const
@@ -111,7 +111,7 @@ namespace xy
                 return 30;
             
             case FEBRUARY:
-                return is_leap_year () ? 29 : 28;
+                return this -> is_leap_year () ? 29 : 28;
 
             default:
                 return 31;
