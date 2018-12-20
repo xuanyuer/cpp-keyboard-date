@@ -38,13 +38,13 @@ int main (int argc, const char ** argv)
         {
             case 1:
             {
-                cout << Date () << endl;
+                cout << xy::Date () << endl;
             }
             break;
 
             case 2:
             {
-                xy::Date date2 = Date (date);
+                xy::Date date2 (date);
                 cout << date2 << endl;
             }
             break;
@@ -97,7 +97,7 @@ int main (int argc, const char ** argv)
                 
             case 10:
             {
-                cout << date.to_string ("%d_%d_%d", DAY, MONTH, YEAR) << endl;
+                cout << date.to_string ("%d_%d_%d", xy::DateFormat::DAY, xy::DateFormat::MONTH, xy::DateFormat::YEAR) << endl;
             }
             break;
                 
@@ -115,7 +115,7 @@ int main (int argc, const char ** argv)
             
             case 13:
             {
-                cout << Date::now () << endl;
+                cout << xy::Date::now () << endl;
             }
             break;
                 
@@ -129,19 +129,19 @@ int main (int argc, const char ** argv)
 
             case 15:
             {
-                date = Date::now ();
+                date = xy::Date::now ();
                 cout << "=        : " << date << endl;
-                cout << "==       : " << (date == Date::now ()) << endl;
-                cout << "!=       : " << (date == Date::now ()) << endl;
-                cout << "<        : " << (date < Date::now ()) << endl;
-                cout << "<=       : " << (date <= Date::now ()) << endl;
-                cout << ">        : " << (date > Date::now ()) << endl;
-                cout << ">=       : " << (date >= Date::now ()) << endl;
+                cout << "==       : " << (date == xy::Date::now ()) << endl;
+                cout << "!=       : " << (date == xy::Date::now ()) << endl;
+                cout << "<        : " << (date < xy::Date::now ()) << endl;
+                cout << "<=       : " << (date <= xy::Date::now ()) << endl;
+                cout << ">        : " << (date > xy::Date::now ()) << endl;
+                cout << ">=       : " << (date >= xy::Date::now ()) << endl;
                 cout << "+        : " << date + 1 << endl;
                 cout << "+=       : " << (date += 1) << endl;
                 cout << "++ (pre) : " << ++ date << endl;
                 cout << "++       : " << date ++ << endl;
-                cout << "-        : " << date - Date::now () << endl;
+                cout << "-        : " << date - xy::Date::now () << endl;
                 cout << "-        : " << date - 1 << endl;
                 cout << "-=       : " << (date -= 1) << endl;
                 cout << "-- (pre) : " << -- date << endl;
