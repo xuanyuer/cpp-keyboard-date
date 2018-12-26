@@ -1,14 +1,17 @@
 /*
  * File Name   : Date.hpp
- * Author      : Er Xuan Yu
+ * Author      : xyer24@outlook.com
  * Description : Header file for Date.cpp, a Date class for handling of simple date arithmetics.
  */
 
+#ifndef DATE_H
+#define DATE_H
+
 namespace xy
 {
-    enum DateFormat
+    enum DateStyle
     {
-        DAY, MONTH, YEAR
+        DMY, DYM, MDY, MYD, YDM, YMD
     };
 
     enum DayOfWeek
@@ -32,10 +35,11 @@ namespace xy
 
             // Accessors
             int         get_day                () const;
-            int         get_month              () const;
-            int         get_year               () const;
             int         get_day_of_week        () const;
             std::string get_day_of_week_string () const;
+            int         get_month              () const;
+            std::string get_month_string       () const;
+            int         get_year               () const;
 
             // Mutators
             void set_day   (int day);
@@ -44,16 +48,16 @@ namespace xy
 
             // To String
             std::string to_string () const;
-            std::string to_string (const std::string & format, DateFormat arg1, DateFormat arg2, DateFormat arg3) const;
+            std::string to_string (const std::string & format, DateStyle style) const;
 
             // Helpers
-            bool        is_leap_year  () const;
-            int         days_in_month () const;
-            int         date_in_days  () const;
             void        adjust_days   ();
             void        adjust_months ();
-            void        parse_date    (int year, int month, int day);
+            int         date_in_days  () const;
+            int         days_in_month () const;
+            bool        is_leap_year  () const;
             static Date now           ();
+            void        parse_date    (int year, int month, int day);
 
             // Overload Equality Operators
             bool   operator == (const Date & date);
@@ -89,3 +93,5 @@ namespace xy
             friend std::istream & operator >> (std::istream & in, Date & date);
     };
 }
+
+#endif

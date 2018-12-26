@@ -1,6 +1,6 @@
 /*
  * File Name   : Date.cpp
- * Author      : Er Xuan Yu
+ * Author      : xyer24@outlook.com
  * Description : Implementation of Date.hpp, a Date class for handling of simple date arithmetics.
  */
 
@@ -40,16 +40,6 @@ namespace xy
         return this -> day;
     }
 
-    int Date::get_month () const
-    {
-        return this -> month;
-    }
-
-    int Date::get_year () const
-    {
-        return this -> year;
-    }
-
     int Date::get_day_of_week () const
     {
         // Credits to sakamoto@sm.sony.co.jp (Tomohiko Sakamoto) on comp.lang.c
@@ -73,6 +63,16 @@ namespace xy
         }
     }
 
+    int Date::get_month () const
+    {
+        return this -> month;
+    }
+
+    int Date::get_year () const
+    {
+        return this -> year;
+    }
+
     // ------------------------------ Mutators ------------------------------
 
     void Date::set_day (int day)
@@ -93,38 +93,7 @@ namespace xy
     }
 
     // ------------------------------ Helpers ------------------------------
-
-    bool Date::is_leap_year () const
-    {
-        return this -> year % 400 == 0 || (this -> year % 4 == 0 && this -> year % 100 != 0);
-    }
-
-    int Date::days_in_month () const
-    {
-        switch (this -> month)
-        {
-            case APRIL:
-            case JUNE:
-            case AUGUST:
-            case SEPTEMBER:
-            case NOVEMBER:
-                return 30;
-            
-            case FEBRUARY:
-                return this -> is_leap_year () ? 29 : 28;
-
-            default:
-                return 31;
-        }
-    }
-
-    int Date::date_in_days () const
-    {
-        int m = (this -> month + 9) % 12;
-        int y = this -> year - m / 10;
-        return (365 * y) + (y / 4) - (y / 100) + (y / 400) + ((m * 306 + 5) / 10) + (this -> day - 1);
-    }
-
+    
     void Date::adjust_days ()
     {
         while (this -> day < 1)
@@ -176,6 +145,39 @@ namespace xy
         }
     }
 
+    int Date::date_in_days () const
+    {
+        int m = (this -> month + 9) % 12;
+        int y = this -> year - m / 10;
+        return (365 * y) + (y / 4) - (y / 100) + (y / 400) + ((m * 306 + 5) / 10) + (this -> day - 1);
+    }
+
+    int Date::days_in_month () const
+    {
+        switch (this -> month)
+        {
+            case APRIL: case JUNE: case AUGUST: case SEPTEMBER: case NOVEMBER:
+            {
+                return 30;
+            }
+
+            case FEBRUARY:  return this -> is_leap_year () ? 29 : 28;
+            default:        return 31;
+        }
+    }
+
+    bool Date::is_leap_year () const
+    {
+        return this -> year % 400 == 0 || (this -> year % 4 == 0 && this -> year % 100 != 0);
+    }
+
+    Date Date::now ()
+    {
+        std::time_t t = std::time (0);
+        std::tm * now = std::localtime (&t);
+        return Date (now -> tm_year + 1900, now -> tm_mon + 1, now -> tm_mday);
+    }
+
     void Date::parse_date (int year, int month, int day)
     {
         /*
@@ -195,30 +197,30 @@ namespace xy
         if (this -> year < 1) this -> year = 1;
     }
 
-    Date Date::now ()
-    {
-        std::time_t t = std::time (0);
-        std::tm * now = std::localtime (&t);
-        return Date (now -> tm_year + 1900, now -> tm_mon + 1, now -> tm_mday);
-    }
-
     // ------------------------------ To String ------------------------------
 
     std::string Date::to_string () const
     {
         // Default format is YYYY-MM-DD (Y being of variable length)
-        char buffer [100];
-        sprintf (buffer, "%d-%02d-%02d", this -> year, this -> month, this -> day);
+        char buffer [21];
+        std::sprintf (buffer, "%d-%02d-%02d", this -> year, this -> month, this -> day);
         return buffer;
     }
 
-    std::string Date::to_string (const std::string & format, DateFormat arg1, DateFormat arg2, DateFormat arg3) const
+    std::string Date::to_string (const std::string & format, DateStyle style) const
     {
-        char buffer [100];
-        sprintf (buffer, format.c_str (),
-                arg1 == DAY ? this -> day : (arg1 == MONTH ? this -> month : this -> year),
-                arg2 == DAY ? this -> day : (arg2 == MONTH ? this -> month : this -> year),
-                arg3 == DAY ? this -> day : (arg3 == MONTH ? this -> month : this -> year));
+        char buffer [21];
+
+        switch (style)
+        {
+            default:    std::sprintf (buffer, format.c_str (), this -> day, this -> month, this -> year); break;
+            case DYM:   std::sprintf (buffer, format.c_str (), this -> day, this -> year, this -> month); break;
+            case MDY:   std::sprintf (buffer, format.c_str (), this -> month, this -> day, this -> year); break;
+            case MYD:   std::sprintf (buffer, format.c_str (), this -> month, this -> year, this -> day); break;
+            case YDM:   std::sprintf (buffer, format.c_str (), this -> year, this -> day, this -> month); break;
+            case YMD:   std::sprintf (buffer, format.c_str (), this -> year, this -> month, this -> day);
+        }
+
         return buffer;
     }
 
