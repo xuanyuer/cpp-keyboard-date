@@ -29,10 +29,12 @@ const std::string MENU [] =
 int main (int argc, const char ** argv)
 {
     xy::Date date;
+    std::string title = "Date Test";
+
     int choice = -1;
     while (choice != 0)
     {
-        choice = keyboard::menu_input ("Date Test", MENU, keyboard::get_array_length (MENU));
+        choice = keyboard::menu_input (title, MENU, keyboard::get_array_length (MENU));
 
         switch (choice)
         {

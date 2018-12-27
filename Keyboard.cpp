@@ -25,39 +25,49 @@ namespace keyboard
 
 	// ------------------------------ Menu Methods ------------------------------
 
-	int menu_input (std::string title, const std::string menu [], int length)
+	int menu_input (const std::string & prompt, std::string & title, const std::string menu [], int menu_length)
 	{
+		/*
+		 * prompt	-	The prompt for user input
+		 * title	-	The title of the menu
+		 * menu		-	A array of strings containing the menu options
+		 * length	-	The size of the menu array
+		 */
 		std::transform (title.begin (), title.end (), title.begin (), ::toupper);
 
 		print_line (80, '=');
 		std::cout << title << std::endl;
 		print_line (80, '-');
 
-		for (int i = 0; i < length; ++ i) std::cout << '[' << i + 1 << "] " << menu [i] << std::endl;
+		for (int i = 0; i < menu_length; ++ i) std::cout << '[' << i + 1 << "] " << menu [i] << std::endl;
 		std::cout << "[0] Quit" << std::endl;
 		
 		print_line (80, '-');
 
-		int choice = read_int ("Your choice : ");
-		while (choice < 0 || choice > length)
+		int choice = read_int (prompt);
+		while (choice < 0 || choice > menu_length)
 		{
-			std::cout << "*** Invalid choice ***" << std::endl;
-			choice = read_int ("Your choice : ");
+			print_message ("Invalid choice");
+			choice = read_int (prompt);
 		}
 
 		std::cout << std::endl;
 		return choice;
 	}
 
-	int menu_input (std::string title, const std::vector <std::string> & menu)
+	int menu_input (std::string & title, const std::string menu [], int menu_length)
 	{
-		return menu_input (title, & menu [0], menu.size ());
+		return menu_input ("Your choice : ", title, menu, menu_length);
 	}
 
-	void print_line (const int size, const char pattern)
+	int menu_input (const std::string & prompt, std::string & title, const std::vector <std::string> & menu)
 	{
-		for (int i = 0; i < size; ++ i) std::cout << pattern;
-		std::cout << std::endl;
+		return menu_input (prompt, title, & menu [0], menu.size ());
+	}
+
+	int menu_input (std::string & title, const std::vector <std::string> & menu)
+	{
+		return menu_input ("Your choice : ", title, menu);
 	}
 
 	// ------------------------------ Read Methods ------------------------------
@@ -68,7 +78,7 @@ namespace keyboard
 
 		while (input.size () != 1)
 		{
-			std::cout << "*** Please enter a character ***" << std::endl;
+			print_error (CHAR);
 			input = read_string (prompt);
 		}
 
@@ -81,7 +91,7 @@ namespace keyboard
 
 		while (!valid <double> (input))
 		{
-			std::cout << "*** Please enter a double ***" << std::endl;
+			print_error (DOUBLE);
 			input = read_string (prompt);
 		}
 
@@ -94,7 +104,7 @@ namespace keyboard
 
 		while (!valid <int> (input))
 		{
-			std::cout << "*** Please enter an integer ***" << std::endl;
+			print_error (INTEGER);
 			input = read_string (prompt);
 		}
 
@@ -107,7 +117,7 @@ namespace keyboard
 
 		while (!valid <int> (input))
 		{
-			std::cout << "*** Please enter a long ***" << std::endl;
+			print_error (LONG);
 			input = read_string (prompt);
 		}
 
@@ -122,5 +132,30 @@ namespace keyboard
 		std::getline (std::cin, input);
 
 		return input;
+	}
+
+	// ------------------------------ Print Methods ------------------------------
+
+	void print_line (const int size, const char pattern)
+	{
+		for (int i = 0; i < size; ++ i) std::cout << pattern;
+		std::cout << std::endl;
+	}
+
+	void print_error (Primitive primitive)
+	{
+		std::string prefix = "Please enter a ";
+		switch (primitive)
+		{
+			case CHAR:	  print_message (prefix + "character"); return;
+			case DOUBLE:  print_message (prefix + "double");	return;
+			case INTEGER: print_message (prefix + "integer");	return;
+			case LONG:	  print_message (prefix + "long");		return;
+		}
+	}
+
+	void print_message (const std::string & message)
+	{
+		std::cout << "*** " << message << " ***" << std::endl;
 	}
 }
