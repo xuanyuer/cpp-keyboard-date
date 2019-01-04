@@ -51,8 +51,6 @@ namespace xy
             std::string to_string (const std::string & format, DateStyle style) const;
 
             // Helpers
-            void        adjust_days   ();
-            void        adjust_months ();
             int         date_in_days  () const;
             int         days_in_month () const;
             bool        is_leap_year  () const;
@@ -72,22 +70,26 @@ namespace xy
 
             // Overload Increment Operators
             Date   operator +  (int days);
+            Date & operator ++ ();
             Date   operator ++ (int);
             Date & operator += (int days);
-            Date & operator ++ ();
 
             // Overload Decrement Operators
             int    operator -  (const Date & date);
             Date   operator -  (int days);
+            Date & operator -- ();
             Date   operator -- (int);
             Date & operator -= (int days);
-            Date & operator -- ();
 
         private:
             int day;
             int month;
             int year;
             
+            // Adjustment Methods
+            void adjust_days   ();
+            void adjust_months ();
+
             // Stream operators
             friend std::ostream & operator << (std::ostream & out, const Date & date);
             friend std::istream & operator >> (std::istream & in, Date & date);

@@ -5,6 +5,7 @@
  */
 
 #include <ctime>
+#include <limits>
 #include <sstream>
 
 #include "Date.hpp"
@@ -68,6 +69,25 @@ namespace xy
         return this -> month;
     }
 
+    std::string Date::get_month_string () const
+    {
+        switch (this -> month)
+        {
+            case JANUARY:   return "January";
+            case FEBRUARY:  return "February";
+            case MARCH:     return "March";
+            case APRIL:     return "April";
+            case MAY:       return "May";
+            case JUNE:      return "June";
+            case JULY:      return "July";
+            case AUGUST:    return "August";
+            case SEPTEMBER: return "September";
+            case OCTOBER:   return "October";
+            case NOVEMBER:  return "November";
+            case DECEMBER:  return "December";
+        }
+    }
+
     int Date::get_year () const
     {
         return this -> year;
@@ -93,57 +113,6 @@ namespace xy
     }
 
     // ------------------------------ Helpers ------------------------------
-    
-    void Date::adjust_days ()
-    {
-        while (this -> day < 1)
-        {
-            this -> month --;
-            if (this -> month == 0)
-            {
-                this -> month = 12;
-                this -> year --;
-            }
-            this -> day += days_in_month ();
-        }
-
-        while (this -> day > days_in_month ())
-        {
-            this -> day -= days_in_month ();
-            this -> month ++;
-            if (this -> month == 13)
-            {
-                this -> month = 1;
-                this -> year ++;
-            }
-        }
-    }
-
-    void Date::adjust_months ()
-    {
-        // month with value 0 will be treated as 12
-        if (this -> month == 0)
-        {
-            this -> month  = 12;
-            this -> year --;
-            return;
-        }
-
-        if (this -> month < 0)
-        {
-            this -> year -= this -> month / -12;
-            this -> month %= 12;
-            this -> month += 12;
-            return;
-        }
-        
-        if (month > 12)
-        {
-            this -> year += this -> month / 12;
-            this -> month %= 12;
-            return;     
-        }
-    }
 
     int Date::date_in_days () const
     {
@@ -157,9 +126,8 @@ namespace xy
         switch (this -> month)
         {
             case APRIL: case JUNE: case AUGUST: case SEPTEMBER: case NOVEMBER:
-            {
+            
                 return 30;
-            }
 
             case FEBRUARY:  return this -> is_leap_year () ? 29 : 28;
             default:        return 31;
@@ -213,12 +181,12 @@ namespace xy
 
         switch (style)
         {
-            default:    std::sprintf (buffer, format.c_str (), this -> day, this -> month, this -> year); break;
-            case DYM:   std::sprintf (buffer, format.c_str (), this -> day, this -> year, this -> month); break;
-            case MDY:   std::sprintf (buffer, format.c_str (), this -> month, this -> day, this -> year); break;
-            case MYD:   std::sprintf (buffer, format.c_str (), this -> month, this -> year, this -> day); break;
-            case YDM:   std::sprintf (buffer, format.c_str (), this -> year, this -> day, this -> month); break;
-            case YMD:   std::sprintf (buffer, format.c_str (), this -> year, this -> month, this -> day);
+            default:  std::sprintf (buffer, format.c_str (), this -> day, this -> month, this -> year); break;
+            case DYM: std::sprintf (buffer, format.c_str (), this -> day, this -> year, this -> month); break;
+            case MDY: std::sprintf (buffer, format.c_str (), this -> month, this -> day, this -> year); break;
+            case MYD: std::sprintf (buffer, format.c_str (), this -> month, this -> year, this -> day); break;
+            case YDM: std::sprintf (buffer, format.c_str (), this -> year, this -> day, this -> month); break;
+            case YMD: std::sprintf (buffer, format.c_str (), this -> year, this -> month, this -> day);
         }
 
         return buffer;
@@ -275,11 +243,13 @@ namespace xy
     Date Date::operator + (int days)    // Add days
     {
         Date date (*this);
-
         date.set_day (date.get_day () + days);
-        date.adjust_days ();
-
         return date;
+    }
+
+    Date & Date::operator ++ ()
+    {
+        return *this = *this + 1;
     }
 
     Date Date::operator ++ (int val)
@@ -294,11 +264,6 @@ namespace xy
         return *this = Date (*this + days);
     }
 
-    Date & Date::operator ++ ()
-    {
-        return *this = Date (*this + 1);
-    }
-
     // ------------------------------ Overload Decrement Operators ------------------------------
 
     int Date::operator - (const Date & date)
@@ -310,11 +275,13 @@ namespace xy
     Date Date::operator - (int days)
     {
         Date date (*this);
-
         date.set_day (date.get_day () - days);
-        date.adjust_days ();
-
         return date;
+    }
+
+    Date & Date::operator -- ()
+    {
+        return *this = *this - 1;
     }
 
     Date Date::operator -- (int val)
@@ -329,9 +296,57 @@ namespace xy
         return *this = Date (*this - days);
     }
 
-    Date & Date::operator -- ()
+    // ------------------------------ Adjustment Methods ------------------------------
+    
+    void Date::adjust_days ()
     {
-        return *this = Date (*this - 1);
+        while (this -> day < 1)
+        {
+            this -> month --;
+            if (this -> month == 0)
+            {
+                this -> month = 12;
+                this -> year --;
+            }
+            this -> day += days_in_month ();
+        }
+
+        while (this -> day > days_in_month ())
+        {
+            this -> day -= days_in_month ();
+            this -> month ++;
+            if (this -> month == 13)
+            {
+                this -> month = 1;
+                this -> year ++;
+            }
+        }
+    }
+
+    void Date::adjust_months ()
+    {
+        // month with value 0 will be treated as 12
+        if (this -> month == 0)
+        {
+            this -> month  = 12;
+            this -> year --;
+            return;
+        }
+
+        if (this -> month < 0)
+        {
+            this -> year -= this -> month / -12;
+            this -> month %= 12;
+            this -> month += 12;
+            return;
+        }
+        
+        if (month > 12)
+        {
+            this -> year += this -> month / 12;
+            this -> month %= 12;
+            return;     
+        }
     }
 
     // ------------------------------ Stream Operators ------------------------------
@@ -343,9 +358,13 @@ namespace xy
 
     std::istream & operator >> (std::istream & in, Date & date)
     {
-        char ch;
-        in >> date.year >> ch >> date.month >> ch >> date.day;
-        
+        in >> date.year;
+        in.get ();
+        in >> date.month;
+        in.get ();
+        in >> date.day;
+        in.ignore (std::numeric_limits <std::streamsize>::max (), '\n');
+
         date.adjust_months ();
         date.adjust_days ();
 

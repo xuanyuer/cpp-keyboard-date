@@ -13,7 +13,7 @@ namespace keyboard
 {
 	enum Primitive
 	{
-		CHAR, DOUBLE, INTEGER, LONG
+		CHAR, DOUBLE, FLOAT, INTEGER, LONG, LONG_LONG
 	};
 
 	// Menu Methods
@@ -23,11 +23,13 @@ namespace keyboard
 	int menu_input (std::string & title, const std::vector <std::string> & menu);
 
 	// Read Methods
-	char		read_char	(const std::string & prompt);
-	double 		read_double	(const std::string & prompt);
-	int 		read_int	(const std::string & prompt);
-	long		read_long	(const std::string & prompt);
-	std::string	read_string	(const std::string & prompt);
+	char		read_char	   (const std::string & prompt);
+	double 		read_double	   (const std::string & prompt);
+	float		read_float     (const std::string & prompt);
+	int 		read_int	   (const std::string & prompt);
+	long		read_long	   (const std::string & prompt);
+	long long	read_long_long (const std::string & prompt);
+	std::string	read_string	   (const std::string & prompt);
 
 	// Print Methods
 	void print_line    (const int length, const char pattern);

@@ -98,6 +98,19 @@ namespace keyboard
 		return std::atof (input.c_str ());
 	}
 
+	float read_float (const std::string & prompt)
+	{
+		std::string input = read_string (prompt);
+
+		while (!valid <float> (input))
+		{
+			print_error (FLOAT);
+			input = read_string (prompt);
+		}
+
+		return std::atof (input.c_str ());
+	}
+
 	int read_int (const std::string & prompt)
 	{
 		std::string input = read_string (prompt);
@@ -124,6 +137,19 @@ namespace keyboard
 		return std::atol (input.c_str ());
 	}
 
+	long long read_long_long (const std::string & prompt)
+	{
+		std::string input = read_string (prompt);
+
+		while (!valid <long long> (input))
+		{
+			print_error (LONG_LONG);
+			input = read_string (prompt);
+		}
+
+		return std::atoll (input.c_str ());
+	}
+
 	std::string read_string (const std::string & prompt)
 	{
 		std::string input;
@@ -147,10 +173,12 @@ namespace keyboard
 		std::string prefix = "Please enter a ";
 		switch (primitive)
 		{
-			case CHAR:	  print_message (prefix + "character"); return;
-			case DOUBLE:  print_message (prefix + "double");	return;
-			case INTEGER: print_message (prefix + "integer");	return;
-			case LONG:	  print_message (prefix + "long");		return;
+			case CHAR:		print_message (prefix + "character"); return;
+			case DOUBLE:	print_message (prefix + "double");	  return;
+			case FLOAT:		print_message (prefix + "float");	  return;
+			case INTEGER:	print_message (prefix + "integer");	  return;
+			case LONG:		print_message (prefix + "long");	  return;
+			case LONG_LONG: print_message (prefix + "long long"); return;
 		}
 	}
 
